@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yunusa Haruna - PhD in Computer Vision</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            /* Light Theme (default) */
+            --bg-body: #f9f9f9;
+            --text-color: #333;
+            --header-bg-start: #2c3e50;
+            --header-bg-end: #3498db;
+            --header-text: white;
+            --nav-bg: #fff;
+            --nav-text: #2c3e50;
+            --nav-hover: #3498db;
+            --section-bg: #fff;
+            --heading-color: #2c3e50;
+            --accent-color: #3498db;
+            --footer-bg: #2c3e50;
+            --footer-text: #fff;
+            --shadow-light: rgba(0, 0, 0, 0.05);
+            --shadow-dark: rgba(0, 0, 0, 0.1);
+            /* New variables for curved button */
+            --button-bg: #3498db;
+            --button-text: #fff;
+            --button-hover: #2c3e50;
+        }
+        /* Dark Theme */
+        [data-theme="dark"] {
+            --bg-body: #1a1a1a;
+            --text-color: #e0e0e0;
+            --header-bg-start: #1e2a38;
+            --header-bg-end: #2a5b8b;
+            --header-text: #e0e0e0;
+            --nav-bg: #252525;
+            --nav-text: #e0e0e0;
+            --nav-hover: #4a90e2;
+            --section-bg: #2b2b2b;
+            --heading-color: #e0e0e0;
+            --accent-color: #4a90e2;
+            --footer-bg: #1e2a38;
+            --footer-text: #e0e0e0;
+            --shadow-light: rgba(255, 255, 255, 0.05);
+            --shadow-dark: rgba(255, 255, 255, 0.1);
+            /* Dark theme button adjustments */
+            --button-bg: #4a90e2;
+            --button-text: #e0e0e0;
+            --button-hover: #e0e0e0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            background: var(--bg-body);
+            color: var(--text-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            transition: background 0.3s, color 0.3s;
+        }
+        header {
+            background: linear-gradient(135deg, var(--header-bg-start), var(--header-bg-end));
+            color: var(--header-text);
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px var(--shadow-dark);
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        nav {
+            background: var(--nav-bg);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 5px var(--shadow-light);
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            margin: 0 1.5rem;
+            text-decoration: none;
+            color: var(--nav-text);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: var(--nav-hover);
+        }
+        #theme-toggle {
+            background: none;
+            border: none;
+            color: var(--nav-text);
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            transition: transform 0.3s, color 0.3s;
+        }
+        #theme-toggle:hover {
+            transform: scale(1.2);
+            color: var(--nav-hover);
+        }
+        section {
+            padding: 3rem 2rem;
+            background: var(--section-bg);
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px var(--shadow-light);
+        }
+        h2 {
+            color: var(--heading-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        h2::after {
+            content: '';
+            width: 50px;
+            height: 3px;
+            background: var(--accent-color);
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+        }
+        ul {
+            list-style: none;
+        }
+        /* Double Column Layout for News, Publications, Projects */
+        #news ul,
+        #publications ul,
+        #projects ul {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        ul li {
+            margin: 0;
+        }
+        footer {
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            position: relative;
+            margin-top: 2rem;
+        }
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: var(--nav-text);
+        }
+        /* Container Styling for Photo and Text */
+        .item-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        /* Curved Box Button for News Date */
+        .news-date-button {
+            background: var(--button-bg);
+            color: var(--button-text);
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px; /* Curved edges */
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            min-width: 80px; /* Match previous image width */
+            box-shadow: 0 2px 5px var(--shadow-dark);
+            transition: background 0.3s, transform 0.3s;
+        }
+        .news-date-button:hover {
+            background: var(--button-hover);
+            transform: scale(1.05);
+        }
+        #publications ul .item-container img,
+        #projects ul .item-container img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 2px 5px var(--shadow-dark);
+        }
+        #about .bio-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+        #about .bio-left {
+            text-align: center;
+        }
+        #about img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 2px 10px var(--shadow-dark);
+            margin-bottom: 1rem;
+        }
+        #about .bio-info {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        #about .bio-info p, #about .bio-info a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        #about .bio-info .icon {
+            color: var(--accent-color);
+            font-size: 1rem;
+        }
+        @media (max-width: 768px) {
+            .item-container, #about .bio-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            #about .bio-left {
+                margin-bottom: 1rem;
+            }
+            #about .bio-info p, #about .bio-info a {
+                justify-content: center;
+            }
+            #news ul,
+            #publications ul,
+            #projects ul {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Yunusa Haruna, PhD</h1>
+        <p>Computer Vision Researcher</p>
+    </header>
+
+    <nav>
+        <div>
+            <a href="#about">About</a>
+            <a href="#news">News</a>
+            <a href="#publications">Publications</a>
+            <a href="#projects">Projects</a>
+        </div>
+        <button id="theme-toggle" aria-label="Toggle Theme" title="Switch between light and dark mode">
+            <span class="theme-icon">☀️</span>
+        </button>
+    </nav>
+
+    <section id="about">
+        <h2>About</h2>
+        <div class="bio-container">
+            <div class="bio-left">
+                <img src="images/profilee.jpg" alt="Yunusa Haruna">
+                <div class="bio-info">
+                    <p><span class="icon">📍</span> Beijing, China</p>
+                    <p><span class="icon">✉️</span> <a href="mailto:yunusa2k2@gmail.com">yunusa2k2[at]gmail[dot]com</a></p>
+                    <a href="#"><span class="icon">🐦</span> Twitter</a>
+                    <a href="#"><span class="icon">🔗</span> LinkedIn</a>
+                    <a href="#"><span class="icon">💻</span> Github</a>
+                    <a href="#"><span class="icon">📚</span> Google Scholar</a>
+                    <a href="#"><span class="icon">🆔</span> ORCID</a>
+                </div>
+            </div>
+            <p>
+                Yunusa's current research interests focus on generative models, 3D scene reconstruction using diffusion models, state-space models, and NLP. He recently completed his PhD in Pattern Recognition and Intelligent Systems at Beihang University, specializing in computer vision tasks such as object detection, segmentation, and recognition using advanced deep learning techniques like CNN, Vision Transformers, and state-space models. With +10 publications in high-reputable scientific journals and conferences, Yunusa has made contributions to the fields of computer vision and NLP. He has also reviewed papers for prestigious conferences, including ECCV, and participated in events such as COLING, ACCV, and ICMV. He holds an M.Sc. in Computer Information Systems from Near East University, Cyprus, and a Bachelor’s degree in Computer Science from Bayero University Kano, Nigeria. Outside of research, Yunusa enjoys playing football and boxing, reflecting his passion for sports and an active lifestyle.
+            </p>
+        </div>
+    </section>
+
+    <section id="news">
+        <h2>News</h2>
+        <ul>
+            <li>
+                <div class="item-container">
+                    <span class="news-date-button">Mar. 2025</span>
+                    <p>Our work on the synergies of hybrid Vision Transformers and CNN was published in the Engineering Applications of Artificial Intelligence.
+			<a href="https://www.sciencedirect.com/science/article/abs/pii/S0952197625000570" target="_blank">Link</a></p>
+                </div>
+            </li>
+            <li>
+                <div class="item-container">
+                    <span class="news-date-button">Dec. 2023</span>
+                    <p>We presented iiANET in ACCV workshop, Computer Vision for Developing Countries, Hanoi, Vietnam
+			<a href="https://arxiv.org/abs/2407.07603" target="_blank">Link</a>
+			</p>
+                </div>
+            </li>
+            <li>
+                <div class="item-container">
+                    <span class="news-date-button">Date</span>
+                    <p>🚀 Excited to announce that our work, "MambaForGCN: Enhancing Long-Range Dependency with State Space Model and Kolmogorov-Arnold Networks for Aspect-Based Sentiment Analysis” has been accepted at COLING 2025! 🙌. <a href="https://lnkd.in/eyH83y4s" target="_blank">Link</a></p>
+                </div>
+            </li>
+            <li>
+                <div class="item-container">
+                    <span class="news-date-button">Oct. 2024</span>
+                    <p>🚜🌾 Excited to share our work on KonvLiNA: Integrating Kolmogorov-Arnold Network with Linear Nyström Attention for Feature Fusion in Crop Field Detection, presented at the 2024 17th International Conference on Machine Vision (ICMV) in Edinburgh, UK. <a href="https://lnkd.in/eyH83y4s" target="_blank">Link</a></p>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <section id="publications">
+        <h2>Publications</h2>
+        <ul>
+            <li>
+                <div class="item-container">
+                    <img src="images/pub1.jpg" alt="Publication 1">
+                    <p>[Year] - [Publication Title], [Journal/Conference], <a href="#">[Link/DOI]</a></p>
+                </div>
+            </li>
+            <li>
+                <div class="item-container">
+                    <img src="images/pub2.jpg" alt="Publication 2">
+                    <p>[Year] - [Publication Title], [Journal/Conference], <a href="#">[Link/DOI]</a></p>
+                </div>
+            </li>
+            <li>
+                <div class="item-container">
+                    <img src="images/pub3.jpg" alt="Publication 3">
+                    <p>[Year] - [Publication Title], [Journal/Conference], <a href="#">[Link/DOI]</a></p>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <section id="projects">
+        <h2>Projects</h2>
+        <ul>
+            <li>
+                <div class="item-container">
+                    <img src="images/proj1.jpg" alt="Project 1">
+                    <p>[Project Name] - [Brief description and <a href="#">link</a> if applicable]</p>
+                </div>
+            </li>
+            <li>
+                <div class="item-container">
+                    <img src="images/proj2.jpg" alt="Project 2">
+                    <p>[Project Name] - [Brief description and <a href="#">link</a> if applicable]</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>© 2025 Yunusa Haruna. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('.theme-icon');
+        const body = document.body;
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            themeIcon.textContent = '🌙';
+        } else {
+            themeIcon.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.textContent = '☀️';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.textContent = '🌙';
+            }
+        });
+    </script>
+</body>
+</html>
