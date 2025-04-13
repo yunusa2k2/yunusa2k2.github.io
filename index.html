@@ -221,6 +221,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+ barking
             gap: 0.5rem;
         }
         #about .bio-info .icon {
@@ -265,6 +266,12 @@
         #gallery .gallery-item:hover .caption {
             transform: translateY(0);
         }
+        /* Ensure clickable images look natural */
+        #gallery .gallery-item a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
         @media (max-width: 768px) {
             .item-container, #about .bio-container {
                 flex-direction: column;
@@ -291,13 +298,14 @@
     </style>
 </head>
 <body>
-    <header>
+    <header id="top">
         <h1>Yunusa Haruna, PhD</h1>
         <p>Computer Vision Researcher</p>
     </header>
 
     <nav>
         <div>
+            <a href="#top">Home</a>
             <a href="#about">About</a>
             <a href="#news">News</a>
             <a href="#publications">Publications</a>
@@ -396,60 +404,46 @@ NewraLab is driven by his passion for advancing AI through rigorous research and
         </ul>
     </section>
 
-    <!-- New Gallery Section -->
     <section id="gallery">
         <h2>Gallery</h2>
         <div class="gallery-grid">
             <div class="gallery-item">
-                <img src="images/gallery1.jpg" alt="Project 1">
-                <div class="caption">Out in the open for a coffee</div>
+                <a href="images/gallery1.jpg" target="_blank">
+                    <img src="images/gallery1.jpg" alt="Project 1">
+                    <div class="caption">Out in the open for a coffee</div>
+                </a>
             </div>
             <div class="gallery-item">
-                <img src="images/gallery2.jpg" alt="Project 2">
-                <div class="caption">Working from my room during Covid19 lockdown</div>
+                <a href="images/gallery2.jpg" target="_blank">
+                    <img src="images/gallery2.jpg" alt="Project 2">
+                    <div class="caption">Working from my room during Covid19 lockdown</div>
+                </a>
             </div>
             <div class="gallery-item">
-                <img src="images/gallery3.jpg" alt="Conference 2024">
-                <div class="caption">During a conference coffee break</div>
+                <a href="images/gallery3.jpg" target="_blank">
+                    <img src="images/gallery3.jpg" alt="Conference 2024">
+                    <div class="caption">During a conference coffee break</div>
+                </a>
             </div>
             <div class="gallery-item">
-                <img src="images/gallery4.jpg" alt="Team NewraLab">
-                <div class="caption">Delivering a lecture on Genetic algorithm, Beihang University</div>
+                <a href="images/gallery4.jpg" target="_blank">
+                    <img src="images/gallery4.jpg" alt="Team NewraLab">
+                    <div class="caption">Delivering a lecture on Genetic algorithm, Beihang University</div>
+                </a>
             </div>
         </div>
     </section>
-
-    <!-- Uncommented Projects Section (if needed later) -->
-    <!--
-    <section id="projects">
-        <h2>Projects</h2>
-        <ul>
-            <li>
-                <div class="item-container">
-                    <img src="images/proj1.jpg" alt="Project 1">
-                    <p>[Project Name] - [Brief description and <a href="#">link</a> if applicable]</p>
-                </div>
-            </li>
-            <li>
-                <div class="item-container">
-                    <img src="images/proj2.jpg" alt="Project 2">
-                    <p>[Project Name] - [Brief description and <a href="#">link</a> if applicable]</p>
-                </div>
-            </li>
-        </ul>
-    </section>
-    -->
 
     <footer>
         <p>© 2025 Yunusa Haruna. All rights reserved.</p>
     </footer>
 
     <script>
+        // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = themeToggle.querySelector('.theme-icon');
         const body = document.body;
 
-        // Check for saved theme preference
         if (localStorage.getItem('theme') === 'dark') {
             body.setAttribute('data-theme', 'dark');
             themeIcon.textContent = '🌙';
@@ -467,6 +461,25 @@ NewraLab is driven by his passion for advancing AI through rigorous research and
                 localStorage.setItem('theme', 'dark');
                 themeIcon.textContent = '🌙';
             }
+        });
+
+        // Smooth scrolling with offset for nav links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    const targetPosition = targetId === '#top' 
+                        ? 0 
+                        : targetElement.getBoundingClientRect().top + window.scrollY - navHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
     </script>
 </body>
