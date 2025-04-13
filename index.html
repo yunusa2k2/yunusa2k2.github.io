@@ -227,6 +227,44 @@
             color: var(--accent-color);
             font-size: 1rem;
         }
+        /* Gallery Styling */
+        #gallery .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        #gallery .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px var(--shadow-dark);
+            transition: transform 0.3s;
+        }
+        #gallery .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        #gallery .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        #gallery .gallery-item .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        #gallery .gallery-item:hover .caption {
+            transform: translateY(0);
+        }
         @media (max-width: 768px) {
             .item-container, #about .bio-container {
                 flex-direction: column;
@@ -243,6 +281,12 @@
             #projects ul {
                 grid-template-columns: 1fr;
             }
+            #gallery .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            #gallery .gallery-item img {
+                height: 150px;
+            }
         }
     </style>
 </head>
@@ -257,6 +301,7 @@
             <a href="#about">About</a>
             <a href="#news">News</a>
             <a href="#publications">Publications</a>
+            <a href="#gallery">Gallery</a>
             <a href="#projects">Projects</a>
         </div>
         <button id="theme-toggle" aria-label="Toggle Theme" title="Switch between light and dark mode">
@@ -278,13 +323,12 @@
                 </div>
             </div>
             <p>
-Yunusa is the founder of NewraLab, an AI startup based in Suzhou, China, focused on building intelligent systems for autonomous technologies, healthcare, and natural language understanding. With a PhD in Pattern Recognition and Intelligent Systems from Beihang University, he brings deep expertise in computer vision, generative models, and NLP — combining academic research with practical innovation. Yunusa has published in top-tier conferences and actively contributes to the global AI community through reviews and collaborations.
+Yunusa is the founder of NewraLab, an AI research and development startup based in Suzhou, China, focused on building intelligent systems for autonomous technologies. With a PhD in Pattern Recognition and Intelligent Systems from Beihang University, he brings deep expertise in computer vision, generative models, and natural language processing — blending academic research with practical innovation.
 
-NewraLab is driven by his passion for turning advanced research into real-world solutions. Outside of work, Yunusa enjoys football and boxing — bringing the same energy and discipline to his startup journey.
+Yunusa has published in, and reviewed for, top-tier conferences such as ACL, COLING, ACCV, ICMV, and ICCV. He actively contributes to the global AI community through peer reviews and collaborative research.
+
+NewraLab is driven by his passion for advancing AI through rigorous research and translating breakthroughs into real-world solutions. Outside of work, Yunusa enjoys football and boxing — bringing the same energy and discipline to his startup journey.
             </p>
-
-
-
         </div>
     </section>
 
@@ -295,16 +339,16 @@ NewraLab is driven by his passion for turning advanced research into real-world 
                 <div class="item-container">
                     <span class="news-date-button">Mar. 2025</span>
                     <p>Our work on the synergies of hybrid Vision Transformers and CNN was published in the Engineering Applications of Artificial Intelligence.
-			<a href="https://www.sciencedirect.com/science/article/abs/pii/S0952197625000570" target="_blank">Link</a>
-		</p>
+            <a href="https://www.sciencedirect.com/science/article/abs/pii/S0952197625000570" target="_blank">Link</a>
+        </p>
                 </div>
             </li>
             <li>
                 <div class="item-container">
                     <span class="news-date-button">Dec. 2023</span>
                     <p>We presented iiANET in ACCV workshop, Computer Vision for Developing Countries, Hanoi, Vietnam
-			<a href="https://arxiv.org/abs/2407.07603" target="_blank">Link</a>
-			</p>
+            <a href="https://arxiv.org/abs/2407.07603" target="_blank">Link</a>
+            </p>
                 </div>
             </li>
             <li>
@@ -343,17 +387,41 @@ NewraLab is driven by his passion for turning advanced research into real-world 
                     <p>Multi-scale dual-stream visual feature extraction and graph reasoning for visual question answering, SaRPFF: A self-attention with register-based pyramid feature fusion module for enhanced rice leaf disease (RLD) detection. | <a href="https://doi.org/10.1007/s10489-025-06325-4" target="_blank">Applied Intelligence, Elsevier (2025)</a></p>
                 </div>
             </li>
-	    <li>
-               <div class="item-container">
-                  <span class="news-date-button">Journal</span>
-                  <p>SaRPFF: A self-attention with register-based pyramid feature fusion module for enhanced rice leaf disease (RLD) detection. | <a href="https://doi.org/10.1007/s11042-025-20696-3" target="_blank">Multimed Tools Application (2025), Springer (2025)</a></p>
-               </div>
+            <li>
+                <div class="item-container">
+                    <span class="news-date-button">Journal</span>
+                    <p>SaRPFF: A self-attention with register-based pyramid feature fusion module for enhanced rice leaf disease (RLD) detection. | <a href="https://doi.org/10.1007/s11042-025-20696-3" target="_blank">Multimed Tools Application (2025), Springer (2025)</a></p>
+                </div>
             </li>
         </ul>
     </section>
 
-<!--
-<section id="projects">
+    <!-- New Gallery Section -->
+    <section id="gallery">
+        <h2>Gallery</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300x200?text=Project+1" alt="Project 1">
+                <div class="caption">Project 1 - AI Research</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300x200?text=Project+2" alt="Project 2">
+                <div class="caption">Project 2 - Computer Vision</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300x200?text=Conference+2024" alt="Conference 2024">
+                <div class="caption">Conference 2024</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300x200?text=Team+NewraLab" alt="Team NewraLab">
+                <div class="caption">Team NewraLab</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Uncommented Projects Section (if needed later) -->
+    <!--
+    <section id="projects">
         <h2>Projects</h2>
         <ul>
             <li>
@@ -369,7 +437,8 @@ NewraLab is driven by his passion for turning advanced research into real-world 
                 </div>
             </li>
         </ul>
-    </section> -->
+    </section>
+    -->
 
     <footer>
         <p>© 2025 Yunusa Haruna. All rights reserved.</p>
