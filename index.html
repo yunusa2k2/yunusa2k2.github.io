@@ -650,6 +650,42 @@
             letter-spacing: 0.08em;
         }
 
+        /* ── VISITOR MAP ── */
+        .visitor-wrap {
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .visitor-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .visitor-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .v-prompt { color: var(--accent); margin-right: 0.4rem; }
+        .v-arg    { color: var(--accent2); }
+
+        .visitor-map {
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            background: var(--surface);
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .visitor-map img { max-width: 100%; border-radius: 2px; }
+
         /* ── FOOTER ── */
         footer {
             border-top: 1px solid var(--border);
@@ -947,6 +983,21 @@
             <img src="" alt="" id="modalImg">
             <div class="modal-cap" id="modalCap"></div>
             <div class="modal-counter" id="modalCounter"></div>
+        </div>
+    </div>
+
+    <!-- ── VISITOR MAP ── -->
+    <div class="visitor-wrap">
+        <div class="visitor-inner">
+            <div class="visitor-label">
+                <span class="v-prompt">$</span> visitor_map <span class="v-arg">--live</span>
+            </div>
+            <div class="visitor-map">
+                <a href="https://info.flagcounter.com/vhDc" target="_blank">
+                    <img src="https://s01.flagcounter.com/count2/vhDc/bg_0D1117/txt_00FF88/border_1A2A1A/columns_4/maxflags_20/viewers_1/labels_1/pageviews_1/flags_1/percent_1/"
+                         alt="Flag Counter">
+                </a>
+            </div>
         </div>
     </div>
 
