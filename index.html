@@ -1,614 +1,1048 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yunusa Haruna - PhD in Computer Vision</title>
+    <title>Yunusa Haruna — Computer Vision Researcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
-            /* Light Theme (default) */
-            --bg-body: #f9f9f9;
-            --text-color: #333;
-            --header-bg-start: #2c3e50;
-            --header-bg-end: #3498db;
-            --header-text: white;
-            --nav-bg: #fff;
-            --nav-text: #2c3e50;
-            --nav-hover: #3498db;
-            --section-bg: #fff;
-            --heading-color: #2c3e50;
-            --accent-color: #3498db;
-            --footer-bg: #2c3e50;
-            --footer-text: #fff;
-            --shadow-light: rgba(0, 0, 0, 0.05);
-            --shadow-dark: rgba(0, 0, 0, 0.1);
-            /* New variables for curved button */
-            --button-bg: #3498db;
-            --button-text: #fff;
-            --button-hover: #2c3e50;
+            --bg: #080c10;
+            --surface: #0d1117;
+            --surface2: #111820;
+            --border: rgba(0,255,136,0.12);
+            --border-bright: rgba(0,255,136,0.35);
+            --accent: #00ff88;
+            --accent2: #00c4ff;
+            --accent3: #ff6b35;
+            --text: #c9d1d9;
+            --text-dim: #6e7681;
+            --text-bright: #f0f6fc;
+            --glow: 0 0 20px rgba(0,255,136,0.25);
+            --glow-blue: 0 0 20px rgba(0,196,255,0.2);
+            --font-mono: 'Space Mono', monospace;
+            --font-display: 'Syne', sans-serif;
         }
-        /* Dark Theme */
-        [data-theme="dark"] {
-            --bg-body: #1a1a1a;
-            --text-color: #e0e0e0;
-            --header-bg-start: #1e2a38;
-            --header-bg-end: #2a5b8b;
-            --header-text: #e0e0e0;
-            --nav-bg: #252525;
-            --nav-text: #e0e0e0;
-            --nav-hover: #4a90e2;
-            --section-bg: #2b2b2b;
-            --heading-color: #e0e0e0;
-            --accent-color: #4a90e2;
-            --footer-bg: #1e2a38;
-            --footer-text: #e0e0e0;
-            --shadow-light: rgba(255, 255, 255, 0.05);
-            --shadow-dark: rgba(255, 255, 255, 0.1);
-            /* Dark theme button adjustments */
-            --button-bg: #4a90e2;
-            --button-text: #e0e0e0;
-            --button-hover: #e0e0e0;
+
+        [data-theme="light"] {
+            --bg: #f5f7fa;
+            --surface: #ffffff;
+            --surface2: #eef2f7;
+            --border: rgba(0, 150, 80, 0.15);
+            --border-bright: rgba(0, 150, 80, 0.4);
+            --accent: #007a42;
+            --accent2: #005fa3;
+            --accent3: #c04800;
+            --text: #24292f;
+            --text-dim: #57606a;
+            --text-bright: #0d1117;
+            --glow: 0 0 20px rgba(0, 150, 80, 0.12);
+            --glow-blue: 0 0 20px rgba(0, 100, 180, 0.12);
         }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.8;
-            background: var(--bg-body);
-            color: var(--text-color);
-            max-width: 1200px;
-            margin: 0 auto;
-            transition: background 0.3s, color 0.3s;
+            font-family: var(--font-mono);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: background 0.4s, color 0.4s;
         }
+
+        /* ── NOISE OVERLAY ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        /* ── GRID BACKGROUND ── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── HEADER ── */
         header {
-            background: linear-gradient(135deg, var(--header-bg-start), var(--header-bg-end));
-            color: var(--header-text);
-            padding: 1rem 1rem;
-            text-align: center;
-            box-shadow: 0 2px 5px var(--shadow-dark);
+            position: relative;
+            z-index: 10;
+            padding: 5rem 2rem 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            overflow: hidden;
         }
+
+        .header-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.1s;
+        }
+
+        .header-label::before { content: '> '; }
+
         header h1 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 6vw, 5rem);
+            font-weight: 800;
+            color: var(--text-bright);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.25s;
         }
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+
+        header h1 .accent-word {
+            color: var(--accent);
+            position: relative;
         }
+
+        .header-sub {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-top: 1rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.4s;
+        }
+
+        .header-sub span { color: var(--accent2); }
+
+        .header-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.55s;
+        }
+
+        .pill-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 1rem;
+            border: 1px solid var(--border-bright);
+            border-radius: 2px;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text);
+            text-decoration: none;
+            background: transparent;
+            transition: all 0.2s;
+            letter-spacing: 0.05em;
+        }
+
+        .pill-link:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            box-shadow: var(--glow);
+        }
+
+        .pill-link .ico { font-size: 0.9rem; }
+
+        /* ── NAV ── */
         nav {
-            background: var(--nav-bg);
-            padding: 1rem;
             position: sticky;
             top: 0;
-            box-shadow: 0 2px 5px var(--shadow-light);
-            z-index: 10;
+            z-index: 100;
+            background: rgba(8, 12, 16, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            height: 54px;
         }
-        nav a {
-            margin: 0 1.5rem;
+
+        [data-theme="light"] nav {
+            background: rgba(245, 247, 250, 0.88);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0;
+        }
+
+        .nav-links a {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
             text-decoration: none;
-            color: var(--nav-text);
-            font-weight: 500;
-            transition: color 0.3s;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0 1.1rem;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
         }
-        nav a:hover {
-            color: var(--nav-hover);
+
+        .nav-links a:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
         }
+
+        .nav-right { display: flex; align-items: center; gap: 0.6rem; }
+
+        .nav-badge {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+        }
+
         #theme-toggle {
             background: none;
-            border: none;
-            color: var(--nav-text);
-            cursor: pointer;
-            font-size: 1.5rem;
-            padding: 0.5rem;
-            transition: transform 0.3s, color 0.3s;
-        }
-        #theme-toggle:hover {
-            transform: scale(1.2);
-            color: var(--nav-hover);
-        }
-        section {
-            padding: 3rem 2rem;
-            background: var(--section-bg);
-            margin: 1rem 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px var(--shadow-light);
-        }
-        h2 {
-            color: var(--heading-color);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-        h2::after {
-            content: '';
-            width: 50px;
-            height: 3px;
-            background: var(--accent-color);
-            position: absolute;
-            bottom: -0.5rem;
-            left: 0;
-        }
-        ul {
-            list-style: none;
-        }
-        /* Double Column Layout for News, Publications, Projects */
-        #news ul,
-        #publications ul,
-        #projects ul {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        ul li {
-            margin: 0;
-        }
-        footer {
-            background: var(--footer-bg);
-            color: var(--footer-text);
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.9rem;
-            position: relative;
-            margin-top: 2rem;
-        }
-        a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        a:hover {
-            color: var(--nav-text);
-        }
-        /* Container Styling for Photo and Text */
-        .item-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        /* Curved Box Button for News Date */
-        .news-date-button {
-            background: var(--button-bg);
-            color: var(--button-text);
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-align: center;
-            min-width: 80px;
-            box-shadow: 0 2px 5px var(--shadow-dark);
-            transition: background 0.3s, transform 0.3s;
-        }
-        .news-date-button:hover {
-            background: var(--button-hover);
-            transform: scale(1.05);
-        }
-        #publications ul .item-container img,
-        #projects ul .item-container img {
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            object-fit: cover;
-            box-shadow: 0 2px 5px var(--shadow-dark);
-        }
-        #about .bio-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 2rem;
-        }
-        #about .bio-left {
-            text-align: center;
-        }
-        #about img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 2px 10px var(--shadow-dark);
-            margin-bottom: 1rem;
-        }
-        #about .bio-info {
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        #about .bio-info p, #about .bio-info a {
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            cursor: pointer;
+            border-radius: 2px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
-        #about .bio-info .icon {
-            color: var(--accent-color);
-            font-size: 1rem;
+
+        #theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
         }
-        /* Carousel Styling */
-        #gallery .carousel-container {
-            position: relative;
-            max-width: 600px;
+
+        /* ── MAIN LAYOUT ── */
+        main {
+            max-width: 1100px;
             margin: 0 auto;
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px var(--shadow-dark);
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
-        #gallery .carousel {
+
+        /* ── SECTION ── */
+        .section {
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        .section-header {
             display: flex;
-            transition: transform 0.5s ease;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.8rem;
         }
-        #gallery .carousel-item {
+
+        .section-num {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+        }
+
+        .section h2 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            letter-spacing: -0.01em;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── ABOUT ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .about-photo-wrap {
+            position: relative;
+        }
+
+        .about-photo-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border: 1px solid var(--accent);
+            border-radius: 2px;
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .about-photo-wrap::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border: 1px solid var(--accent);
+            border-radius: 2px;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .about-photo-wrap img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            border-radius: 2px;
+            position: relative;
+            z-index: 1;
+            filter: grayscale(15%);
+            transition: filter 0.3s;
+        }
+
+        .about-photo-wrap:hover img { filter: grayscale(0%); }
+
+        .about-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            margin-top: 1rem;
+        }
+
+        .meta-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .meta-row .ico { color: var(--accent); font-size: 0.8rem; }
+
+        .meta-row a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .meta-row a:hover { color: var(--accent); }
+
+        .about-text p {
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.9;
+        }
+
+        .about-text p:last-child { margin-bottom: 0; }
+
+        .highlight { color: var(--accent); }
+        .highlight2 { color: var(--accent2); }
+
+        /* ── TERMINAL BOX ── */
+        .terminal-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1.5rem;
+        }
+
+        .terminal-bar {
+            background: var(--surface2);
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-r { background: #ff5f56; }
+        .dot-y { background: #ffbd2e; }
+        .dot-g { background: #27c93f; }
+
+        .terminal-filename {
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            margin-left: auto;
+            letter-spacing: 0.05em;
+        }
+
+        .terminal-body {
+            padding: 1rem 1.2rem;
+            font-size: 0.78rem;
+            line-height: 1.8;
+        }
+
+        .t-line { display: flex; gap: 1rem; }
+        .t-key { color: var(--accent2); min-width: 120px; }
+        .t-val { color: var(--text); }
+        .t-prompt { color: var(--accent); margin-right: 0.5rem; }
+
+        /* ── NEWS CARDS ── */
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .news-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1.2rem 1.4rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent);
+            transform: scaleY(0);
+            transition: transform 0.2s;
+            transform-origin: bottom;
+        }
+
+        .news-card:hover {
+            border-color: var(--border-bright);
+            box-shadow: var(--glow);
+        }
+
+        .news-card:hover::before { transform: scaleY(1); }
+
+        .news-date {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--accent);
+            background: rgba(0,255,136,0.08);
+            border: 1px solid rgba(0,255,136,0.2);
+            padding: 0.3rem 0.6rem;
+            border-radius: 2px;
+            white-space: nowrap;
+            letter-spacing: 0.05em;
+            flex-shrink: 0;
+        }
+
+        .news-text {
+            font-size: 0.82rem;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .news-text a {
+            color: var(--accent2);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: color 0.2s;
+        }
+
+        .news-text a:hover { color: var(--accent); }
+
+        /* ── PUBLICATIONS ── */
+        .pub-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .pub-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1.2rem 1.4rem;
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+            transition: all 0.2s;
+            margin-bottom: 0.6rem;
+            position: relative;
+        }
+
+        .pub-item:hover {
+            border-color: var(--border-bright);
+            transform: translateX(4px);
+        }
+
+        .pub-badge {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.6rem;
+            border-radius: 2px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .pub-badge.journal {
+            color: var(--accent);
+            background: rgba(0,255,136,0.08);
+            border: 1px solid rgba(0,255,136,0.2);
+        }
+
+        .pub-badge.conf {
+            color: var(--accent2);
+            background: rgba(0,196,255,0.08);
+            border: 1px solid rgba(0,196,255,0.2);
+        }
+
+        .pub-content { flex: 1; }
+
+        .pub-title {
+            font-family: var(--font-display);
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin-bottom: 0.3rem;
+            line-height: 1.4;
+        }
+
+        .pub-venue {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .pub-venue a {
+            color: var(--accent2);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .pub-venue a:hover { color: var(--accent); }
+
+        /* ── GALLERY ── */
+        .carousel-wrap {
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 40px rgba(0,0,0,0.4);
+        }
+
+        .carousel { display: flex; transition: transform 0.5s cubic-bezier(0.77,0,0.175,1); }
+
+        .carousel-item {
             flex: 0 0 100%;
             position: relative;
             cursor: pointer;
         }
-        #gallery .carousel-item img {
+
+        .carousel-item img {
             width: 100%;
-            height: 400px;
+            height: 420px;
             object-fit: cover;
             display: block;
+            filter: brightness(0.85);
+            transition: filter 0.3s;
         }
-        #gallery .carousel-item .caption {
+
+        .carousel-item:hover img { filter: brightness(1); }
+
+        .caption {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.7);
+            padding: 1.2rem 1.4rem 1rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
             color: #fff;
-            padding: 0.5rem;
-            text-align: center;
-            font-size: 0.9rem;
+            letter-spacing: 0.05em;
         }
-        #gallery .carousel-button {
+
+        .caption::before {
+            content: '// ';
+            color: var(--accent);
+        }
+
+        .carousel-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: var(--button-bg);
-            color: var(--button-text);
-            border: none;
-            padding: 0.5rem;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--border-bright);
+            color: var(--accent);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1rem;
+            border-radius: 2px;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s;
+        }
+
+        .carousel-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .carousel-btn.prev { left: 12px; }
+        .carousel-btn.next { right: 12px; }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 1rem;
+        }
+
+        .cdot {
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            box-shadow: 0 2px 5px var(--shadow-dark);
-            transition: background 0.3s, transform 0.3s;
+            background: var(--border-bright);
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        #gallery .carousel-button:hover {
-            background: var(--button-hover);
-            transform: translateY(-50%) scale(1.1);
+
+        .cdot.active {
+            background: var(--accent);
+            width: 20px;
+            border-radius: 3px;
         }
-        #gallery .prev {
-            left: 10px;
-        }
-        #gallery .next {
-            right: 10px;
-        }
-        /* Modal Styling */
+
+        /* ── MODAL ── */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 999;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(8px);
         }
-        .modal-content {
-            max-width: 80%;
-            max-height: 80%;
-            background: var(--section-bg);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px var(--shadow-dark);
+
+        .modal.open { display: flex; }
+
+        .modal-inner {
             position: relative;
-            padding: 1rem;
+            max-width: 85vw;
+            max-height: 85vh;
         }
-        .modal-content img {
-            width: 100%;
-            height: auto;
-            max-height: 70vh;
+
+        .modal-inner img {
+            max-width: 100%;
+            max-height: 80vh;
             object-fit: contain;
             border-radius: 4px;
+            border: 1px solid var(--border);
         }
-        .modal-content .modal-caption {
-            text-align: center;
-            padding: 0.5rem 0;
-            color: var(--text-color);
-            font-size: 1rem;
-        }
+
         .modal-close {
             position: absolute;
-            top: -30px;
-            right: -30px;
-            background: var(--button-bg);
-            color: var(--button-text);
+            top: -14px;
+            right: -14px;
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            color: #000;
             border: none;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 1.2rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
         }
-        .modal-close:hover {
-            background: var(--button-hover);
-            transform: scale(1.1);
+
+        .modal-cap {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 0.8rem;
         }
+
+        .modal-cap::before { content: '// '; color: var(--accent); }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1100px;
+            margin: 3rem auto 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-left {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-dim);
+        }
+
+        .footer-left span { color: var(--accent); }
+
+        .footer-right {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            letter-spacing: 0.08em;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        /* ── RESPONSIVE ── */
         @media (max-width: 768px) {
-            .item-container, #about .bio-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            #about .bio-left {
-                margin-bottom: 1rem;
-            }
-            #about .bio-info p, #about .bio-info a {
-                justify-content: center;
-            }
-            #news ul,
-            #publications ul,
-            #projects ul {
-                grid-template-columns: 1fr;
-            }
-            #gallery .carousel-item img {
-                height: 250px;
-            }
-            .modal-content {
-                max-width: 90%;
-                max-height: 90%;
-            }
-            .modal-content img {
-                max-height: 60vh;
-            }
-            .modal-close {
-                top: -25px;
-                right: -25px;
-                width: 25px;
-                height: 25px;
-                font-size: 1rem;
-            }
+            header { padding: 3rem 1.5rem 2.5rem; }
+            main { padding: 1.5rem; }
+            .about-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .about-photo-wrap { max-width: 160px; }
+            .about-photo-wrap img { width: 160px; height: 160px; }
+            .news-grid { grid-template-columns: 1fr; }
+            .nav-links a { padding: 0 0.6rem; font-size: 0.65rem; }
+            .nav-badge { display: none; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ── HEADER ── -->
     <header id="top">
-        <h1>Yunusa Haruna, PhD</h1>
-        <p>Entreprenuer and Computer Vision Researcher</p>
+        <div class="header-label">researcher // founder // phd</div>
+        <h1>Yunusa <span class="accent-word">Haruna</span></h1>
+        <p class="header-sub">Computer Vision · <span>Efficient Architectures</span> · Edge AI · Medical Imaging</p>
+        <div class="header-links">
+            <a class="pill-link" href="mailto:yunusa2k2@gmail.com"><span class="ico">✉</span> yunusa2k2[at]gmail</a>
+            <a class="pill-link" href="https://www.linkedin.com/in/yunusa2k2/" target="_blank"><span class="ico">in</span> LinkedIn</a>
+            <a class="pill-link" href="https://github.com/yunusa2k2" target="_blank"><span class="ico">⌥</span> GitHub</a>
+            <a class="pill-link" href="https://scholar.google.com/citations?user=u7pm-hAAAAAJ&hl=en" target="_blank"><span class="ico">◈</span> Scholar</a>
+        </div>
     </header>
 
+    <!-- ── NAV ── -->
     <nav>
-        <div>
+        <div class="nav-links">
             <a href="#top">Home</a>
             <a href="#about">About</a>
             <a href="#news">News</a>
-            <a href="#publications">Publications</a>
+            <a href="#publications">Papers</a>
             <a href="#gallery">Gallery</a>
-            <a href="#projects">Projects</a>
         </div>
-        <button id="theme-toggle" aria-label="Toggle Theme" title="Switch between light and dark mode">
-            <span class="theme-icon">☀️</span>
-        </button>
+        <div class="nav-right">
+            <span class="nav-badge">NewraLab</span>
+            <button id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark">
+                <span class="theme-icon">◑</span>
+            </button>
+        </div>
     </nav>
 
-    <section id="about">
-        <h2>About</h2>
-        <div class="bio-container">
-            <div class="bio-left">
-                <img src="images/profilee.jpg" alt="Yunusa Haruna">
-                <div class="bio-info">
-                    <p><span class="icon">📍</span> Beijing, China</p>
-                    <p><span class="icon">✉️</span> <a href="mailto:yunusa2k2@gmail.com">yunusa2k2[at]gmail[dot]com</a></p>
-                    <a href="https://www.linkedin.com/in/yunusa2k2/"><span class="icon">🔗</span> LinkedIn</a>
-                    <a href="https://github.com/yunusa2k2"><span class="icon">💻</span> Github</a>
-                    <a href="https://scholar.google.com/citations?user=u7pm-hAAAAAJ&hl=en"><span class="icon">📚</span> Google Scholar</a>
+    <main>
+        <!-- ── ABOUT ── -->
+        <section class="section" id="about">
+            <div class="section-header">
+                <span class="section-num">01</span>
+                <h2>About</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="about-grid">
+                <div>
+                    <div class="about-photo-wrap">
+                        <img src="images/profilee.jpg" alt="Yunusa Haruna">
+                    </div>
+                    <div class="about-meta">
+                        <div class="meta-row"><span class="ico">📍</span> Beijing, China</div>
+                        <div class="meta-row"><span class="ico">✉</span> <a href="mailto:yunusa2k2@gmail.com">yunusa2k2[at]gmail</a></div>
+                        <div class="meta-row"><span class="ico">🔗</span> <a href="https://www.linkedin.com/in/yunusa2k2/" target="_blank">LinkedIn</a></div>
+                        <div class="meta-row"><span class="ico">⌥</span> <a href="https://github.com/yunusa2k2" target="_blank">GitHub</a></div>
+                        <div class="meta-row"><span class="ico">◈</span> <a href="https://scholar.google.com/citations?user=u7pm-hAAAAAJ&hl=en" target="_blank">Google Scholar</a></div>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <p>
+                        Yunusa is the founder of <span class="highlight">NewraLab</span>, an AI research and development startup based in Suzhou, China, focused on building intelligent systems for autonomous technologies. With a <span class="highlight2">PhD in Pattern Recognition and Intelligent Systems</span> from Beihang University, he brings deep expertise in computer vision, generative models, and natural language processing.
+                    </p>
+                    <p>
+                        He has published in and reviewed for top-tier venues including ACL, COLING, ACCV, ICMV, and ICCV, actively contributing to the global AI research community through peer review and collaborative research.
+                    </p>
+                    <p>
+                        NewraLab is driven by his passion for advancing AI through rigorous research and translating breakthroughs into real-world solutions. Outside of work, Yunusa enjoys football and boxing — bringing the same discipline to his startup journey.
+                    </p>
+                    <div class="terminal-box">
+                        <div class="terminal-bar">
+                            <div class="dot dot-r"></div>
+                            <div class="dot dot-y"></div>
+                            <div class="dot dot-g"></div>
+                            <span class="terminal-filename">current_focus.sh</span>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="t-line"><span class="t-prompt">$</span><span class="t-key">postdoc</span><span class="t-val">Agentic Retinal Fundus Diagnosis · Long-Range Reasoning</span></div>
+                            <div class="t-line"><span class="t-prompt">$</span><span class="t-key">lab</span><span class="t-val">NewraLab — Edge-Ready AI for Emerging Regions</span></div>
+                            <div class="t-line"><span class="t-prompt">$</span><span class="t-key">arch</span><span class="t-val">SSM / Mamba · Hybrid CNN-ViT · Spatiotemporal</span></div>
+                            <div class="t-line"><span class="t-prompt">$</span><span class="t-key">status</span><span class="t-val" style="color:var(--accent)">open to collaboration</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <p>
-Yunusa is the founder of NewraLab, an AI research and development startup based in Suzhou, China, focused on building intelligent systems for autonomous technologies. With a PhD in Pattern Recognition and Intelligent Systems from Beihang University, he brings deep expertise in computer vision, generative models, and natural language processing — blending academic research with practical innovation.
+        </section>
 
-Yunusa has published in, and reviewed for, top-tier conferences such as ACL, COLING, ACCV, ICMV, and ICCV. He actively contributes to the global AI community through peer reviews and collaborative research.
-
-NewraLab is driven by his passion for advancing AI through rigorous research and translating breakthroughs into real-world solutions. Outside of work, Yunusa enjoys football and boxing — bringing the same energy and discipline to his startup journey.
-            </p>
-        </div>
-    </section>
-
-    <section id="news">
-        <h2>News</h2>
-        <ul>
-            <li>
-                <div class="item-container">
-                    <span class="news-date-button">Mar. 2025</span>
-                    <p>Our work on the synergies of hybrid Vision Transformers and CNN was published in the Engineering Applications of Artificial Intelligence.
-            <a href="https://www.sciencedirect.com/science/article/abs/pii/S0952197625000570" target="_blank">Link</a>
-        </p>
+        <!-- ── NEWS ── -->
+        <section class="section" id="news">
+            <div class="section-header">
+                <span class="section-num">02</span>
+                <h2>News</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="news-grid">
+                <div class="news-card">
+                    <span class="news-date">Mar. 2025</span>
+                    <p class="news-text">Our work on the synergies of hybrid Vision Transformers and CNNs was published in <em>Engineering Applications of Artificial Intelligence</em>. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0952197625000570" target="_blank">[link →]</a></p>
                 </div>
-            </li>
-            <li>
-                <div class="item-container">
-                    <span class="news-date-button">Dec. 2023</span>
-                    <p>We presented iiANET in ACCV workshop, Computer Vision for Developing Countries, Hanoi, Vietnam
-            <a href="files/iiANET.pptx" target="_blank">Link</a>
-            </p>
+                <div class="news-card">
+                    <span class="news-date">Dec. 2024</span>
+                    <p class="news-text">MambaForGCN accepted at COLING 2025 — enhancing long-range dependency with SSM and Kolmogorov-Arnold Networks for ABSA. <a href="https://lnkd.in/eyH83y4s" target="_blank">[link →]</a></p>
                 </div>
-            </li>
-            <li>
-                <div class="item-container">
-                    <span class="news-date-button">Dec. 2024</span>
-                    <p>🚀 Excited to announce that our work, "MambaForGCN: Enhancing Long-Range Dependency with State Space Model and Kolmogorov-Arnold Networks for Aspect-Based Sentiment Analysis” has been accepted at COLING 2025! 🙌. <a href="https://lnkd.in/eyH83y4s" target="_blank">Link</a></p>
+                <div class="news-card">
+                    <span class="news-date">Oct. 2024</span>
+                    <p class="news-text">KonvLiNA presented at ICMV 2024, Edinburgh — integrating KAN with Linear Nyström Attention for crop field detection. <a href="https://lnkd.in/eyH83y4s" target="_blank">[link →]</a></p>
                 </div>
-            </li>
-            <li>
-                <div class="item-container">
-                    <span class="news-date-button">Oct. 2024</span>
-                    <p>🚜🌾 Excited to share our work on KonvLiNA: Integrating Kolmogorov-Arnold Network with Linear Nyström Attention for Feature Fusion in Crop Field Detection, presented at the 2024 17th International Conference on Machine Vision (ICMV) in Edinburgh, UK. <a href="https://lnkd.in/eyH83y4s" target="_blank">Link</a></p>
-                </div>
-            </li>
-        </ul>
-    </section>
-
-    <section id="publications">
-        <h2>Publications</h2>
-        <ul>
-            <li>
-                <div class="item-container">
-                    <span class="news-date-button">Journal</span>
-                    <p>Exploring the Synergies of Hybrid CNNs and ViTs Architectures for Computer Vision: A survey. | <a href="https://www.sciencedirect.com/science/article/pii/S0952197625000570" target="_blank">Engineering Applications of Artificial Intelligence, Elsevier (2025)</a></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-container">
-                    <span class="news-date-button">Conf.</span>
-                    <p>MambaForGCN: Enhancing Long-Range Dependency with State Space Model and Kolmogorov-Arnold Networks for Aspect-Based Sentiment Analysis. | <a href="https://aclanthology.org/2025.coling-main.148.pdf" target="_blank">31st ACL COLING, Abu Dhabi, UAE (2025)</a></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-container">
-                    <span class="news-date-button">Journal</span>
-                    <p>Multi-scale dual-stream visual feature extraction and graph reasoning for visual question answering, SaRPFF: A self-attention with register-based pyramid feature fusion module for enhanced rice leaf disease (RLD) detection. | <a href="https://doi.org/10.1007/s10489-025-06325-4" target="_blank">Applied Intelligence, Elsevier (2025)</a></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-container">
-                    <span class="news-date-button">Journal</span>
-                    <p>SaRPFF: A self-attention with register-based pyramid feature fusion module for enhanced rice leaf disease (RLD) detection. | <a href="https://doi.org/10.1007/s11042-025-20696-3" target="_blank">Multimed Tools Application (2025), Springer (2025)</a></p>
-                </div>
-            </li>
-        </ul>
-    </section>
-
-    <section id="gallery">
-        <h2>Gallery</h2>
-        <div class="carousel-container">
-            <div class="carousel">
-                <div class="carousel-item" data-src="images/gallery1.jpg">
-                    <img src="images/gallery1.jpg" alt="Project 1">
-                    <div class="caption">Out in the open for a coffee</div>
-                </div>
-                <div class="carousel-item" data-src="images/gallery2.jpg">
-                    <img src="images/gallery2.jpg" alt="Project 2">
-                    <div class="caption">Working from my room during Covid19 lockdown</div>
-                </div>
-                <div class="carousel-item" data-src="images/gallery3.jpg">
-                    <img src="images/gallery3.jpg" alt="Conference 2024">
-                    <div class="caption">During a conference coffee break</div>
-                </div>
-                <div class="carousel-item" data-src="images/gallery4.jpg">
-                    <img src="images/gallery4.jpg" alt="Team NewraLab">
-                    <div class="caption">Delivering a lecture on Genetic algorithm, Beihang University</div>
+                <div class="news-card">
+                    <span class="news-date">Dec. 2023</span>
+                    <p class="news-text">Presented iiANET at ACCV Workshop — Computer Vision for Developing Countries, Hanoi, Vietnam. <a href="files/iiANET.pptx" target="_blank">[slides →]</a></p>
                 </div>
             </div>
-            <button class="carousel-button prev" aria-label="Previous Image">❮</button>
-            <button class="carousel-button next" aria-label="Next Image">❯</button>
-        </div>
-    </section>
+        </section>
 
-    <!-- Modal for enlarged images -->
+        <!-- ── PUBLICATIONS ── -->
+        <section class="section" id="publications">
+            <div class="section-header">
+                <span class="section-num">03</span>
+                <h2>Publications</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="pub-list">
+                <div class="pub-item">
+                    <span class="pub-badge journal">Journal</span>
+                    <div class="pub-content">
+                        <div class="pub-title">Exploring the Synergies of Hybrid CNNs and ViTs Architectures for Computer Vision: A Survey</div>
+                        <div class="pub-venue"><a href="https://www.sciencedirect.com/science/article/pii/S0952197625000570" target="_blank">Engineering Applications of Artificial Intelligence, Elsevier (2025) →</a></div>
+                    </div>
+                </div>
+                <div class="pub-item">
+                    <span class="pub-badge conf">Conf.</span>
+                    <div class="pub-content">
+                        <div class="pub-title">MambaForGCN: Enhancing Long-Range Dependency with State Space Model and Kolmogorov-Arnold Networks for Aspect-Based Sentiment Analysis</div>
+                        <div class="pub-venue"><a href="https://aclanthology.org/2025.coling-main.148.pdf" target="_blank">31st ACL COLING, Abu Dhabi, UAE (2025) →</a></div>
+                    </div>
+                </div>
+                <div class="pub-item">
+                    <span class="pub-badge journal">Journal</span>
+                    <div class="pub-content">
+                        <div class="pub-title">Multi-Scale Dual-Stream Visual Feature Extraction and Graph Reasoning for Visual Question Answering</div>
+                        <div class="pub-venue"><a href="https://doi.org/10.1007/s10489-025-06325-4" target="_blank">Applied Intelligence, Elsevier (2025) →</a></div>
+                    </div>
+                </div>
+                <div class="pub-item">
+                    <span class="pub-badge journal">Journal</span>
+                    <div class="pub-content">
+                        <div class="pub-title">SaRPFF: Self-Attention with Register-Based Pyramid Feature Fusion for Enhanced Rice Leaf Disease Detection</div>
+                        <div class="pub-venue"><a href="https://doi.org/10.1007/s11042-025-20696-3" target="_blank">Multimedia Tools and Applications, Springer (2025) →</a></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── GALLERY ── -->
+        <section class="section" id="gallery">
+            <div class="section-header">
+                <span class="section-num">04</span>
+                <h2>Gallery</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="carousel-wrap">
+                <div class="carousel">
+                    <div class="carousel-item" data-src="images/gallery1.jpg" data-cap="Out in the open for a coffee">
+                        <img src="images/gallery1.jpg" alt="Coffee break">
+                        <div class="caption">Out in the open for a coffee</div>
+                    </div>
+                    <div class="carousel-item" data-src="images/gallery2.jpg" data-cap="Working from my room during Covid-19 lockdown">
+                        <img src="images/gallery2.jpg" alt="Remote work">
+                        <div class="caption">Working from my room during Covid-19 lockdown</div>
+                    </div>
+                    <div class="carousel-item" data-src="images/gallery3.jpg" data-cap="During a conference coffee break">
+                        <img src="images/gallery3.jpg" alt="Conference 2024">
+                        <div class="caption">During a conference coffee break</div>
+                    </div>
+                    <div class="carousel-item" data-src="images/gallery4.jpg" data-cap="Delivering a lecture on Genetic Algorithms, Beihang University">
+                        <img src="images/gallery4.jpg" alt="Lecture">
+                        <div class="caption">Delivering a lecture on Genetic Algorithm, Beihang University</div>
+                    </div>
+                </div>
+                <button class="carousel-btn prev" aria-label="Previous">&#8592;</button>
+                <button class="carousel-btn next" aria-label="Next">&#8594;</button>
+            </div>
+            <div class="carousel-dots">
+                <div class="cdot active"></div>
+                <div class="cdot"></div>
+                <div class="cdot"></div>
+                <div class="cdot"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ── MODAL ── -->
     <div class="modal" id="imageModal">
-        <div class="modal-content">
-            <button class="modal-close" aria-label="Close Modal">×</button>
-            <img src="" alt="Enlarged Image" id="modalImage">
-            <div class="modal-caption" id="modalCaption"></div>
+        <div class="modal-inner">
+            <button class="modal-close" id="modalClose">✕</button>
+            <img src="" alt="" id="modalImg">
+            <div class="modal-cap" id="modalCap"></div>
         </div>
     </div>
 
+    <!-- ── FOOTER ── -->
     <footer>
-        <p>© 2025 Yunusa Haruna. All rights reserved.</p>
+        <div class="footer-left">© 2025 <span>Yunusa Haruna</span>. All rights reserved.</div>
+        <div class="footer-right">Beijing · China · NewraLab</div>
     </footer>
 
     <script>
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = themeToggle.querySelector('.theme-icon');
-        const body = document.body;
+        // ── THEME TOGGLE ──
+        const toggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        const icon = toggle.querySelector('.theme-icon');
 
-        if (localStorage.getItem('theme') === 'dark') {
-            body.setAttribute('data-theme', 'dark');
-            themeIcon.textContent = '🌙';
-        } else {
-            themeIcon.textContent = '☀️';
-        }
+        const saved = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', saved);
+        icon.textContent = saved === 'dark' ? '◑' : '●';
 
-        themeToggle.addEventListener('click', () => {
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'light');
-                themeIcon.textContent = '☀️';
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-                themeIcon.textContent = '🌙';
-            }
+        toggle.addEventListener('click', () => {
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            icon.textContent = isDark ? '●' : '◑';
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
         });
 
-        // Smooth scrolling with offset for nav links
-        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        // ── SMOOTH SCROLL ──
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
                 e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const navHeight = document.querySelector('nav').offsetHeight;
-                    const targetPosition = targetId === '#top' 
-                        ? 0 
-                        : targetElement.getBoundingClientRect().top + window.scrollY - navHeight;
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
+                const target = document.querySelector(a.getAttribute('href'));
+                if (!target) return;
+                const navH = document.querySelector('nav').offsetHeight;
+                const top = a.getAttribute('href') === '#top' ? 0 : target.getBoundingClientRect().top + window.scrollY - navH - 16;
+                window.scrollTo({ top, behavior: 'smooth' });
+            });
+        });
+
+        // ── CAROUSEL ──
+        const carousel = document.querySelector('.carousel');
+        const items = document.querySelectorAll('.carousel-item');
+        const dots = document.querySelectorAll('.cdot');
+        let idx = 0;
+
+        function goTo(n) {
+            idx = (n + items.length) % items.length;
+            carousel.style.transform = `translateX(-${idx * 100}%)`;
+            dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        }
+
+        document.querySelector('.prev').addEventListener('click', () => goTo(idx - 1));
+        document.querySelector('.next').addEventListener('click', () => goTo(idx + 1));
+        dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+
+        // auto-advance
+        setInterval(() => goTo(idx + 1), 4500);
+
+        // ── MODAL ──
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalCap = document.getElementById('modalCap');
+
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                modalImg.src = item.getAttribute('data-src');
+                modalCap.textContent = item.getAttribute('data-cap');
+                modal.classList.add('open');
+            });
+        });
+
+        document.getElementById('modalClose').addEventListener('click', () => modal.classList.remove('open'));
+        modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+
+        // ── ACTIVE NAV ON SCROLL ──
+        const sections = document.querySelectorAll('section[id], header[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const navH = document.querySelector('nav').offsetHeight;
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(a => {
+                        a.style.color = a.getAttribute('href') === '#' + entry.target.id ? 'var(--accent)' : '';
+                        a.style.borderBottomColor = a.getAttribute('href') === '#' + entry.target.id ? 'var(--accent)' : 'transparent';
                     });
                 }
             });
-        });
+        }, { rootMargin: `-${navH}px 0px -60% 0px` });
 
-        // Carousel functionality
-        const carousel = document.querySelector('.carousel');
-        const carouselItems = document.querySelectorAll('.carousel-item');
-        const prevButton = document.querySelector('.prev');
-        const nextButton = document.querySelector('.next');
-        let currentIndex = 0;
-
-        function updateCarousel() {
-            carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
-        }
-
-        prevButton.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
-            updateCarousel();
-        });
-
-        nextButton.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % carouselItems.length;
-            updateCarousel();
-        });
-
-        // Modal functionality
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        const modalCaption = document.getElementById('modalCaption');
-        const modalClose = document.querySelector('.modal-close');
-
-        carouselItems.forEach(item => {
-            item.addEventListener('click', () => {
-                modalImage.src = item.getAttribute('data-src');
-                modalCaption.textContent = item.querySelector('.caption').textContent;
-                modal.style.display = 'flex';
-            });
-        });
-
-        modalClose.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
+        sections.forEach(s => observer.observe(s));
     </script>
 </body>
 </html>
