@@ -393,6 +393,15 @@
 
         .news-text a:hover { color: var(--accent); }
 
+        .news-emotion {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--accent);
+            letter-spacing: 0.06em;
+            margin-bottom: 0.3rem;
+            opacity: 0.85;
+        }
+
         /* ── PUBLICATIONS ── */
         .pub-list {
             display: flex;
@@ -714,6 +723,44 @@
             letter-spacing: 0.08em;
         }
 
+        /* ── FOLD ── */
+        .fold-hide { display: none; }
+
+        .fold-btn-wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .fold-btn {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 0.45rem 1.4rem;
+            border-radius: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .fold-btn:hover {
+            border-color: var(--border-bright);
+            color: var(--accent);
+        }
+
+        .fold-arrow {
+            display: inline-block;
+            transition: transform 0.25s;
+        }
+
+        .fold-btn.open .fold-arrow { transform: rotate(180deg); }
+
         /* ── ANIMATIONS ── */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(16px); }
@@ -827,35 +874,44 @@
                 <h2>News</h2>
                 <div class="section-line"></div>
             </div>
-            <div class="news-grid">
+            <div class="news-grid" id="newsGrid">
                 <div class="news-card">
                     <span class="news-date">May 2025</span>
-                    <p class="news-text">Joining <span class="highlight">Qing Liu's</span> research group at <strong>CMVS, University of Oulu</strong> as a postdoctoral researcher in medical images.</p>
+                    <p class="news-text"><span class="news-emotion">🎯 Excited!</span> Joining <span class="highlight">Qing Liu's</span> research group at <strong>CMVS, University of Oulu</strong> as a postdoctoral researcher in medical imaging.</p>
+                </div>
+                <div class="news-card">
+                    <span class="news-date">Jan. 2026</span>
+                    <p class="news-text"><span class="news-emotion">🎉 Thrilled!</span> <strong>iiANET</strong> accepted at <strong>TMLR</strong> — Transactions on Machine Learning Research. Years of work, finally in print.</p>
                 </div>
                 <div class="news-card">
                     <span class="news-date">Mar. 2025</span>
-                    <p class="news-text">Selected for <strong>Google's TPU Research Cloud (TRC) Program</strong>, gaining access to TPU infrastructure to accelerate research in VLMs</p>
+                    <p class="news-text"><span class="news-emotion">🚀 Excited!</span> Selected for <strong>Google's TPU Research Cloud (TRC) Program</strong>, gaining access to TPU infrastructure to accelerate research in VLMs.</p>
                 </div>
                 <div class="news-card">
                     <span class="news-date">Feb. 2025</span>
-                    <p class="news-text">Excited! NewraLab selected for the <strong>NVIDIA Inception Program</strong>, joining NVIDIA's global startup ecosystem for AI companies.</p>
+                    <p class="news-text"><span class="news-emotion">🙌 Excited!</span> NewraLab selected for the <strong>NVIDIA Inception Program</strong>, joining NVIDIA's global startup ecosystem for AI companies.</p>
                 </div>
-                <div class="news-card">
+                <div class="news-card fold-hide">
                     <span class="news-date">Mar. 2025</span>
                     <p class="news-text">Our work on the synergies of hybrid Vision Transformers and CNNs was published in <em>Engineering Applications of Artificial Intelligence</em>. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0952197625000570" target="_blank">[link →]</a></p>
                 </div>
-                <div class="news-card">
+                <div class="news-card fold-hide">
                     <span class="news-date">Dec. 2024</span>
                     <p class="news-text">MambaForGCN accepted at COLING 2025 — enhancing long-range dependency with SSM and Kolmogorov-Arnold Networks for ABSA. <a href="https://lnkd.in/eyH83y4s" target="_blank">[link →]</a></p>
                 </div>
-                <div class="news-card">
+                <div class="news-card fold-hide">
                     <span class="news-date">Oct. 2024</span>
                     <p class="news-text">KonvLiNA presented at ICMV 2024, Edinburgh — integrating KAN with Linear Nyström Attention for crop field detection. <a href="https://lnkd.in/eyH83y4s" target="_blank">[link →]</a></p>
                 </div>
-                <div class="news-card">
+                <div class="news-card fold-hide">
                     <span class="news-date">Dec. 2023</span>
                     <p class="news-text">Presented iiANET at ACCV Workshop — Computer Vision for Developing Countries, Hanoi, Vietnam. <a href="files/iiANET.pptx" target="_blank">[slides →]</a></p>
                 </div>
+            </div>
+            <div class="fold-btn-wrap">
+                <button class="fold-btn" id="newsFoldBtn" onclick="toggleFold('newsGrid','newsFoldBtn')">
+                    <span>Show more</span> <span class="fold-arrow">↓</span>
+                </button>
             </div>
         </section>
 
@@ -866,7 +922,7 @@
                 <h2>Publications</h2>
                 <div class="section-line"></div>
             </div>
-            <div class="pub-list">
+            <div class="pub-list" id="pubList">
                 <div class="pub-item">
                     <span class="pub-badge journal">Journal</span>
                     <div class="pub-content">
@@ -881,20 +937,25 @@
                         <div class="pub-venue"><a href="https://aclanthology.org/2025.coling-main.148.pdf" target="_blank">31st ACL COLING, Abu Dhabi, UAE (2025) →</a></div>
                     </div>
                 </div>
-                <div class="pub-item">
+                <div class="pub-item fold-hide">
                     <span class="pub-badge journal">Journal</span>
                     <div class="pub-content">
                         <div class="pub-title">Multi-Scale Dual-Stream Visual Feature Extraction and Graph Reasoning for Visual Question Answering</div>
                         <div class="pub-venue"><a href="https://doi.org/10.1007/s10489-025-06325-4" target="_blank">Applied Intelligence, Elsevier (2025) →</a></div>
                     </div>
                 </div>
-                <div class="pub-item">
+                <div class="pub-item fold-hide">
                     <span class="pub-badge journal">Journal</span>
                     <div class="pub-content">
                         <div class="pub-title">SaRPFF: Self-Attention with Register-Based Pyramid Feature Fusion for Enhanced Rice Leaf Disease Detection</div>
                         <div class="pub-venue"><a href="https://doi.org/10.1007/s11042-025-20696-3" target="_blank">Multimedia Tools and Applications, Springer (2025) →</a></div>
                     </div>
                 </div>
+            </div>
+            <div class="fold-btn-wrap">
+                <button class="fold-btn" id="pubFoldBtn" onclick="toggleFold('pubList','pubFoldBtn')">
+                    <span>Show more</span> <span class="fold-arrow">↓</span>
+                </button>
             </div>
         </section>
 
@@ -1137,6 +1198,17 @@
         }, { rootMargin: `-54px 0px -60% 0px` });
 
         sections.forEach(s => observer.observe(s));
+        // ── FOLD TOGGLE ──
+        function toggleFold(gridId, btnId) {
+            const grid = document.getElementById(gridId);
+            const btn  = document.getElementById(btnId);
+            const hidden = grid.querySelectorAll('.fold-hide');
+            const isOpen = btn.classList.contains('open');
+            hidden.forEach(el => el.style.display = isOpen ? '' : 'flex');
+            btn.classList.toggle('open', !isOpen);
+            btn.querySelector('span').textContent = isOpen ? 'Show more' : 'Show less';
+        }
+
     </script>
 </body>
 </html>
