@@ -791,9 +791,90 @@
             .nav-badge { display: none; }
             footer { flex-direction: column; gap: 0.5rem; text-align: center; }
         }
+
+        /* ── TERMINAL INTRO ── */
+        #terminal-intro {
+            position: fixed;
+            inset: 0;
+            background: #0a0a0a;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+        #terminal-intro.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #terminal-intro-box {
+            width: min(700px, 90vw);
+            background: #111;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(0,255,136,0.08);
+        }
+        .ti-bar {
+            background: #1a1a1a;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid #222;
+        }
+        .ti-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+        }
+        .ti-title {
+            margin-left: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: #555;
+        }
+        #ti-body {
+            padding: 24px 28px 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            min-height: 160px;
+            color: #ccc;
+        }
+        #ti-body .ti-prompt { color: #00ff88; margin-right: 8px; }
+        #ti-body .ti-cmd   { color: #fff; }
+        #ti-body .ti-out   { color: #888; display: block; padding-left: 16px; }
+        #ti-body .ti-name  { color: #00ff88; font-weight: 700; }
+        #ti-body .ti-role  { color: #7eb8f7; }
+        #ti-body .cursor   { display: inline-block; width: 9px; height: 1em;
+                             background: #00ff88; margin-left: 2px;
+                             animation: blink 0.8s step-end infinite; vertical-align: middle; }
+        @keyframes blink { 50% { opacity: 0; } }
+        #ti-skip {
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: #333;
+            padding: 14px;
+            letter-spacing: 0.05em;
+        }
     </style>
 </head>
 <body>
+
+    <!-- ── TERMINAL INTRO ── -->
+    <div id="terminal-intro">
+        <div id="terminal-intro-box">
+            <div class="ti-bar">
+                <div class="ti-dot" style="background:#ff5f57"></div>
+                <div class="ti-dot" style="background:#febc2e"></div>
+                <div class="ti-dot" style="background:#28c840"></div>
+                <span class="ti-title">yunusa@cmvs ~ zsh</span>
+            </div>
+            <div id="ti-body"></div>
+            <div id="ti-skip">press any key to skip_</div>
+        </div>
+    </div>
 
     <!-- ── NAV ── -->
     <nav>
@@ -1165,6 +1246,78 @@
             btn.classList.toggle('open', !isOpen);
             btn.querySelector('span').textContent = isOpen ? 'Show more' : 'Show less';
         }
+
+
+        // ── TERMINAL INTRO ──
+        (function() {
+            const intro   = document.getElementById('terminal-intro');
+            const body    = document.getElementById('ti-body');
+            let   skipped = false;
+
+            const lines = [
+                { type: 'cmd',  text: 'whoami' },
+                { type: 'out',  text: '<span class="ti-name">Yunusa Haruna</span>' },
+                { type: 'cmd',  text: 'cat role.txt' },
+                { type: 'out',  text: '<span class="ti-role">Postdoctoral Researcher · CMVS, University of Oulu</span>' },
+                { type: 'out',  text: '<span class="ti-role">Visiting Researcher · UiT The Arctic University of Norway</span>' },
+                { type: 'cmd',  text: 'echo $RESEARCH' },
+                { type: 'out',  text: 'State-Space Models · Efficient Vision · Medical Imaging' },
+                { type: 'cmd',  text: 'ls projects/' },
+                { type: 'out',  text: 'vGamba/  iiANET/  GaboonNet/  NewraLab/' },
+                { type: 'cmd',  text: './launch_portfolio.sh' },
+                { type: 'out',  text: '✓ Loading ...' },
+            ];
+
+            function dismiss() {
+                if (skipped) return;
+                skipped = true;
+                intro.classList.add('fade-out');
+                setTimeout(() => intro.style.display = 'none', 650);
+            }
+
+            document.addEventListener('keydown', dismiss);
+            intro.addEventListener('click', dismiss);
+
+            let lineIdx = 0, charIdx = 0;
+            let currentEl = null;
+
+            function nextLine() {
+                if (lineIdx >= lines.length) {
+                    setTimeout(dismiss, 700);
+                    return;
+                }
+                const line = lines[lineIdx];
+                const row  = document.createElement('div');
+
+                if (line.type === 'cmd') {
+                    row.innerHTML = '<span class="ti-prompt">❯</span><span class="ti-cmd"></span>';
+                    body.appendChild(row);
+                    currentEl = row.querySelector('.ti-cmd');
+                    typeText(line.text, currentEl, 38, () => {
+                        lineIdx++; charIdx = 0;
+                        setTimeout(nextLine, 180);
+                    });
+                } else {
+                    row.className = 'ti-out';
+                    row.innerHTML = line.text;
+                    body.appendChild(row);
+                    lineIdx++; charIdx = 0;
+                    setTimeout(nextLine, 80);
+                }
+            }
+
+            function typeText(text, el, speed, done) {
+                if (skipped) { done(); return; }
+                if (charIdx < text.length) {
+                    el.textContent += text[charIdx++];
+                    setTimeout(() => typeText(text, el, speed, done), speed + Math.random() * 20);
+                } else {
+                    done();
+                }
+            }
+
+            nextLine();
+        })();
 
     </script>
 </body>
