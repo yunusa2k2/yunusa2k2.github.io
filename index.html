@@ -404,9 +404,9 @@
 
         /* ── PUBLICATIONS ── */
         .pub-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
         }
 
         .pub-item {
@@ -505,7 +505,7 @@
         }
 
         .masonry {
-            columns: 3;
+            columns: 10;
             column-gap: 10px;
         }
 
@@ -786,6 +786,7 @@
             .about-photo-wrap { max-width: 160px; }
             .about-photo-wrap img { width: 160px; height: 160px; }
             .news-grid { grid-template-columns: 1fr; }
+            .pub-list { grid-template-columns: 1fr; }
             .nav-links a { padding: 0 0.6rem; font-size: 0.65rem; }
             .nav-badge { display: none; }
             footer { flex-direction: column; gap: 0.5rem; text-align: center; }
@@ -937,25 +938,20 @@
                         <div class="pub-venue"><a href="https://aclanthology.org/2025.coling-main.148.pdf" target="_blank">31st ACL COLING, Abu Dhabi, UAE (2025) →</a></div>
                     </div>
                 </div>
-                <div class="pub-item fold-hide">
+                <div class="pub-item">
                     <span class="pub-badge journal">Journal</span>
                     <div class="pub-content">
                         <div class="pub-title">Multi-Scale Dual-Stream Visual Feature Extraction and Graph Reasoning for Visual Question Answering</div>
                         <div class="pub-venue"><a href="https://doi.org/10.1007/s10489-025-06325-4" target="_blank">Applied Intelligence, Elsevier (2025) →</a></div>
                     </div>
                 </div>
-                <div class="pub-item fold-hide">
+                <div class="pub-item">
                     <span class="pub-badge journal">Journal</span>
                     <div class="pub-content">
                         <div class="pub-title">SaRPFF: Self-Attention with Register-Based Pyramid Feature Fusion for Enhanced Rice Leaf Disease Detection</div>
                         <div class="pub-venue"><a href="https://doi.org/10.1007/s11042-025-20696-3" target="_blank">Multimedia Tools and Applications, Springer (2025) →</a></div>
                     </div>
                 </div>
-            </div>
-            <div class="fold-btn-wrap">
-                <button class="fold-btn" id="pubFoldBtn" onclick="toggleFold('pubList','pubFoldBtn')">
-                    <span>Show more</span> <span class="fold-arrow">↓</span>
-                </button>
             </div>
         </section>
 
