@@ -435,7 +435,17 @@
             padding: 0.3rem 0.6rem;
             border-radius: 2px;
             white-space: nowrap;
+            align-self: flex-start;
+        }
+
+        /* left column: badge stacked above thumbnail */
+        .pub-badge-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
             flex-shrink: 0;
+            width: 64px;
         }
 
         .pub-badge.journal {
@@ -473,6 +483,231 @@
         }
 
         .pub-venue a:hover { color: var(--accent); }
+
+        /* ── PUB ARCH THUMBNAIL ── */
+        .pub-arch-thumb {
+            width: 64px;
+            height: 52px;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            background: var(--surface2);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            flex-shrink: 0;
+        }
+
+        .pub-arch-thumb:hover {
+            border-color: var(--border-bright);
+            box-shadow: var(--glow);
+        }
+
+        .pub-arch-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .pub-arch-thumb:hover img { transform: scale(1.06); }
+
+        /* placeholder state */
+        .pub-arch-thumb.placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .pub-arch-thumb.placeholder::before {
+            content: '⬡';
+            font-size: 1rem;
+            color: var(--border-bright);
+            line-height: 1;
+        }
+
+        .pub-arch-thumb.placeholder::after {
+            content: 'arch';
+            font-family: var(--font-mono);
+            font-size: 0.46rem;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .pub-arch-thumb .zoom-hint {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,255,136,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .pub-arch-thumb:hover .zoom-hint { opacity: 1; }
+            border: 1px solid var(--border);
+        .pub-arch-cta {
+            font-family: var(--font-mono);
+            font-size: 0.58rem;
+            color: var(--text-dim);
+            letter-spacing: 0.06em;
+            opacity: 0.65;
+        }
+
+        /* ── ARCH LIGHTBOX ── */
+        #archModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(14px);
+        }
+
+        #archModal.open { display: flex; }
+
+        .arch-modal-inner {
+            position: relative;
+            max-width: min(860px, 92vw);
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(0,255,136,0.1);
+        }
+
+        .arch-modal-bar {
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .arch-modal-bar .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        .arch-modal-label {
+            margin-left: auto;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            letter-spacing: 0.06em;
+        }
+
+        #archModalClose {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0 0.2rem;
+            transition: color 0.2s;
+        }
+
+        #archModalClose:hover { color: var(--accent); }
+
+        .arch-modal-img-wrap {
+            padding: 1.5rem;
+            min-height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+        }
+
+        /* placeholder view inside modal */
+        .arch-modal-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            width: 100%;
+            min-height: 240px;
+            border: 1px dashed var(--border-bright);
+            border-radius: 4px;
+            padding: 2rem;
+        }
+
+        .arch-modal-placeholder .ph-icon {
+            font-size: 2.5rem;
+            opacity: 0.3;
+        }
+
+        .arch-modal-placeholder .ph-filename {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            background: rgba(0,255,136,0.07);
+            border: 1px solid rgba(0,255,136,0.2);
+            padding: 0.35rem 0.9rem;
+            border-radius: 3px;
+        }
+
+        .arch-modal-placeholder .ph-hint {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            letter-spacing: 0.05em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        #archModalImg {
+            max-width: 100%;
+            max-height: 72vh;
+            object-fit: contain;
+            border-radius: 3px;
+            display: none;
+        }
+
+        .arch-modal-footer {
+            padding: 0.8rem 1.2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .arch-modal-caption {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-dim);
+        }
+
+        .arch-modal-caption::before { content: '// '; color: var(--accent); }
+
+        .arch-modal-type {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.55rem;
+            border-radius: 2px;
+        }
+
+        .arch-modal-type.journal {
+            color: var(--accent);
+            border: 1px solid rgba(0,255,136,0.25);
+            background: rgba(0,255,136,0.07);
+        }
+
+        .arch-modal-type.conf {
+            color: var(--accent2);
+            border: 1px solid rgba(0,196,255,0.25);
+            background: rgba(0,196,255,0.07);
+        }
 
         /* ── GALLERY ── */
         .gallery-tabs {
@@ -1006,28 +1241,56 @@
             </div>
             <div class="pub-list" id="pubList">
                 <div class="pub-item">
-                    <span class="pub-badge journal">Journal</span>
+                    <div class="pub-badge-col">
+                        <span class="pub-badge journal">Journal</span>
+                        <div class="pub-arch-thumb placeholder"
+                             onclick="openArchModal('images/arch/cnn_vit_survey.png','Hybrid CNN + ViT Architecture','cnn_vit_survey.png','journal')"
+                             title="View architecture diagram">
+                            <span class="zoom-hint">⤢</span>
+                        </div>
+                    </div>
                     <div class="pub-content">
                         <div class="pub-title">Exploring the Synergies of Hybrid CNNs and ViTs Architectures for Computer Vision: A Survey</div>
                         <div class="pub-venue"><a href="https://www.sciencedirect.com/science/article/pii/S0952197625000570" target="_blank">Engineering Applications of Artificial Intelligence, Elsevier (2025) →</a></div>
                     </div>
                 </div>
                 <div class="pub-item">
-                    <span class="pub-badge conf">Conf.</span>
+                    <div class="pub-badge-col">
+                        <span class="pub-badge conf">Conf.</span>
+                        <div class="pub-arch-thumb placeholder"
+                             onclick="openArchModal('images/arch/mambaforgcn.png','MambaForGCN Architecture','mambaforgcn.png','conf')"
+                             title="View architecture diagram">
+                            <span class="zoom-hint">⤢</span>
+                        </div>
+                    </div>
                     <div class="pub-content">
                         <div class="pub-title">MambaForGCN: Enhancing Long-Range Dependency with State Space Model and Kolmogorov-Arnold Networks for Aspect-Based Sentiment Analysis</div>
                         <div class="pub-venue"><a href="https://aclanthology.org/2025.coling-main.148.pdf" target="_blank">31st ACL COLING, Abu Dhabi, UAE (2025) →</a></div>
                     </div>
                 </div>
                 <div class="pub-item fold-hide">
-                    <span class="pub-badge journal">Journal</span>
+                    <div class="pub-badge-col">
+                        <span class="pub-badge journal">Journal</span>
+                        <div class="pub-arch-thumb placeholder"
+                             onclick="openArchModal('images/arch/vqa_dualstream.png','Dual-Stream VQA Architecture','vqa_dualstream.png','journal')"
+                             title="View architecture diagram">
+                            <span class="zoom-hint">⤢</span>
+                        </div>
+                    </div>
                     <div class="pub-content">
                         <div class="pub-title">Multi-Scale Dual-Stream Visual Feature Extraction and Graph Reasoning for Visual Question Answering</div>
                         <div class="pub-venue"><a href="https://doi.org/10.1007/s10489-025-06325-4" target="_blank">Applied Intelligence, Elsevier (2025) →</a></div>
                     </div>
                 </div>
                 <div class="pub-item fold-hide">
-                    <span class="pub-badge journal">Journal</span>
+                    <div class="pub-badge-col">
+                        <span class="pub-badge journal">Journal</span>
+                        <div class="pub-arch-thumb placeholder"
+                             onclick="openArchModal('images/arch/sarpff.png','SaRPFF Architecture','sarpff.png','journal')"
+                             title="View architecture diagram">
+                            <span class="zoom-hint">⤢</span>
+                        </div>
+                    </div>
                     <div class="pub-content">
                         <div class="pub-title">SaRPFF: Self-Attention with Register-Based Pyramid Feature Fusion for Enhanced Rice Leaf Disease Detection</div>
                         <div class="pub-venue"><a href="https://doi.org/10.1007/s11042-025-20696-3" target="_blank">Multimedia Tools and Applications, Springer (2025) →</a></div>
@@ -1091,6 +1354,34 @@
             </div>
         </section>
     </main>
+
+    <!-- ── ARCH LIGHTBOX ── -->
+    <div id="archModal">
+        <div class="arch-modal-inner">
+            <div class="arch-modal-bar">
+                <div class="dot dot-r"></div>
+                <div class="dot dot-y"></div>
+                <div class="dot dot-g"></div>
+                <span class="arch-modal-label" id="archModalFilename">architecture.png</span>
+                <button id="archModalClose" title="Close">✕</button>
+            </div>
+            <div class="arch-modal-img-wrap">
+                <img id="archModalImg" src="" alt="Architecture diagram">
+                <div class="arch-modal-placeholder" id="archModalPlaceholder">
+                    <div class="ph-icon">⬡</div>
+                    <div class="ph-filename" id="archModalPHFilename">architecture.png</div>
+                    <div class="ph-hint">
+                        Drop your architecture image here to replace this placeholder.<br>
+                        Save it as: <code id="archModalPHPath">images/arch/filename.png</code>
+                    </div>
+                </div>
+            </div>
+            <div class="arch-modal-footer">
+                <div class="arch-modal-caption" id="archModalCaption">Architecture diagram</div>
+                <span class="arch-modal-type journal" id="archModalType">Journal</span>
+            </div>
+        </div>
+    </div>
 
     <!-- ── MODAL ── -->
     <div class="modal" id="imageModal">
@@ -1318,6 +1609,43 @@
 
             nextLine();
         })();
+
+        // ── ARCH LIGHTBOX ──
+        const archModal       = document.getElementById('archModal');
+        const archModalImg    = document.getElementById('archModalImg');
+        const archModalPH     = document.getElementById('archModalPlaceholder');
+        const archModalCap    = document.getElementById('archModalCaption');
+        const archModalType   = document.getElementById('archModalType');
+        const archModalFile   = document.getElementById('archModalFilename');
+        const archModalPHFile = document.getElementById('archModalPHFilename');
+        const archModalPHPath = document.getElementById('archModalPHPath');
+
+        function openArchModal(src, caption, filename, type) {
+            // Try to load the real image; fall back to placeholder
+            const testImg = new Image();
+            testImg.onload = () => {
+                archModalImg.src = src;
+                archModalImg.style.display = 'block';
+                archModalPH.style.display = 'none';
+            };
+            testImg.onerror = () => {
+                archModalImg.style.display = 'none';
+                archModalPH.style.display = 'flex';
+                archModalPHFile.textContent = filename;
+                archModalPHPath.textContent = src;
+            };
+            testImg.src = src;
+
+            archModalCap.textContent = caption;
+            archModalFile.textContent = filename;
+            archModalType.textContent = type === 'journal' ? 'Journal' : 'Conf.';
+            archModalType.className = 'arch-modal-type ' + type;
+            archModal.classList.add('open');
+        }
+
+        document.getElementById('archModalClose').addEventListener('click', () => archModal.classList.remove('open'));
+        archModal.addEventListener('click', e => { if (e.target === archModal) archModal.classList.remove('open'); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') archModal.classList.remove('open'); });
 
     </script>
 </body>
